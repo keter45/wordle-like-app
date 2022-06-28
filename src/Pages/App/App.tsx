@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     const fetchChamp = async () => {
       const response = await fetch(
-        "http://ddragon.leagueoflegends.com/cdn/12.12.1/data/en_US/champion.json"
+        "https://ddragon.leagueoflegends.com/cdn/12.12.1/data/en_US/champion.json"
       );
       const { data } = await response.json();
       const names = Object.keys(data).filter(
