@@ -1,15 +1,35 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Line from "./components/Line";
+import confetti from "canvas-confetti";
 
 function App() {
   const [solution, setSolution] = useState("");
   const [avaliableChamps, setAvaliableChamps] = useState<string[]>();
-  const [guesses, setGuesses] = useState<string[]>(Array(4).fill(null));
+  const [guesses, setGuesses] = useState<string[]>(Array(6).fill(null));
   const [currentGuess, setCurrentGuess] = useState("");
   const [isGameOver, setIsGameOver] = useState(false);
   const [invalidAnimation, setInvalidAnimation] = useState(false);
 
+  // setInitial Values
+  useEffect(() => {
+    const fetchChamp = async () => {
+      const response = await fetch(
+        "http://ddragon.leagueoflegends.com/cdn/12.12.1/data/en_US/champion.json"
+      );
+      const { data } = await response.json();
+      const names = Object.keys(data).filter(
+        (champ: string) => champ.length === 5
+      );
+      setAvaliableChamps(names.map((n) => n.toLowerCase()));
+      const randomChamp =
+        names[Math.floor(Math.random() * names.length)].toLowerCase();
+      setSolution(randomChamp);
+    };
+    fetchChamp();
+  }, []);
+
+  // handle key event
   useEffect(() => {
     const handleType = (event: KeyboardEvent) => {
       if (isGameOver) {
@@ -23,7 +43,14 @@ function App() {
           return;
         }
         const isCorrect = solution === currentGuess;
-        setIsGameOver(isCorrect);
+        if (isCorrect) {
+          setIsGameOver(isCorrect);
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+          });
+        }
         const newGuesses = [...guesses];
         newGuesses[guesses.findIndex((val) => val == null)] = currentGuess;
         setGuesses(newGuesses);
@@ -47,22 +74,6 @@ function App() {
     return () => window.removeEventListener("keydown", handleType);
   });
 
-  useEffect(() => {
-    const fetchChamp = async () => {
-      const response = await fetch(
-        "http://ddragon.leagueoflegends.com/cdn/12.12.1/data/en_US/champion.json"
-      );
-      const { data } = await response.json();
-      const names = Object.keys(data).filter(
-        (champ: string) => champ.length === 5
-      );
-      setAvaliableChamps(names.map((n) => n.toLowerCase()));
-      const randomChamp =
-        names[Math.floor(Math.random() * names.length)].toLowerCase();
-      setSolution(randomChamp);
-    };
-    fetchChamp();
-  }, []);
   function setAnimation() {
     setInvalidAnimation(true);
     setTimeout(() => setInvalidAnimation(false), 500);
