@@ -8,6 +8,7 @@ function App() {
   const [guesses, setGuesses] = useState<string[]>(Array(4).fill(null));
   const [currentGuess, setCurrentGuess] = useState("");
   const [isGameOver, setIsGameOver] = useState(false);
+  const [invalidAnimation, setInvalidAnimation] = useState(false);
 
   useEffect(() => {
     const handleType = (event: KeyboardEvent) => {
@@ -18,6 +19,7 @@ function App() {
       if (event.key === "Enter" && currentGuess.length === 5) {
         const isValid = avaliableChamps?.includes(currentGuess);
         if (!isValid) {
+          setAnimation();
           return;
         }
         const isCorrect = solution === currentGuess;
@@ -61,7 +63,10 @@ function App() {
     };
     fetchChamp();
   }, []);
-
+  function setAnimation() {
+    setInvalidAnimation(true);
+    setTimeout(() => setInvalidAnimation(false), 500);
+  }
   return (
     <div className="container">
       <h1>Wordly League of Legends</h1>
@@ -72,6 +77,7 @@ function App() {
             guess={isCurrentGuess ? currentGuess : guess ?? ""}
             isFinal={!isCurrentGuess && guess !== null}
             solution={solution}
+            shake={isCurrentGuess ? invalidAnimation : false}
             key={i}
           />
         );
