@@ -1,0 +1,64 @@
+body {
+  background-color: #121213;
+  color: #fff;
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.line {
+  display: flex;
+  gap: 7px;
+}
+
+.tile {
+  display: flex;
+  width: 58px;
+  height: 58px;
+  border: 2px solid #565758;
+  color: #fff;
+  font-size: 2rem;
+  line-height: 2rem;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  box-sizing: border-box;
+}
+.corret {
+  background-color: #538d4e;
+}
+
+.almost-corret {
+  background-color: #c9b458;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
