@@ -6,4 +6,4 @@ You have 6 chances to guess it corretly
 
 ![Exemple](https://github.com/keter45/wordle-like-app/blob/master/public/exemple.png?raw=true)
 
-### [Play the game](https://wordlelol.vercel.app).
+### [Play the game](https://wordlelol.vercel.app)
