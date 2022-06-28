@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [solution, setSolution] = useState("");
+  useEffect(() => {
+    const fetchChamp = async () => {
+      const response = await fetch(
+        "http://ddragon.leagueoflegends.com/cdn/12.12.1/data/en_US/champion.json"
+      );
+      const { data } = await response.json();
+      const names = Object.keys(data).filter(
+        (champ: string) => champ.length === 5
+      );
+      console.log(names);
+      const randomChamp = names[Math.floor(Math.random() * names.length)];
+      setSolution(randomChamp);
+    };
+    fetchChamp();
+  }, []);
+
+  return <div>{}</div>;
 }
 
 export default App;
