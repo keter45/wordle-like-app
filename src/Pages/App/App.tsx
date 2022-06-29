@@ -22,6 +22,7 @@ function App() {
         (champ: string) => champ.length === 5
       );
       setAvaliableChamps(names.map((n) => n.toLowerCase()));
+
       const randomChamp =
         names[Math.floor(Math.random() * names.length)].toLowerCase();
       setSolution(randomChamp);
@@ -50,6 +51,10 @@ function App() {
             spread: 70,
             origin: { y: 0.6 },
           });
+
+          const path = require(`../../../public/voicelines/${solution}.mp3`);
+          const audio = new Audio(path);
+          audio.play();
         }
         const newGuesses = [...guesses];
         newGuesses[guesses.findIndex((val) => val == null)] = currentGuess;
