@@ -9,3 +9,6 @@ You have 6 chances to guess it corretly
 ![Exemple](https://github.com/keter45/wordle-like-app/blob/master/public/exemple.png?raw=true)
 
 
+### to do
+- [ ] Keyboard
+- [ ] better logic to deal with character repetition
