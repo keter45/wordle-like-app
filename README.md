@@ -12,3 +12,5 @@ You have 6 chances to guess it corretly
 ### to do
 - [ ] Keyboard
 - [ ] better logic to deal with character repetition
+- [ ] share on twitter
+- [ ] one world for day
