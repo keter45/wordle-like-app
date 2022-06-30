@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Line from "./components/Line";
 import confetti from "canvas-confetti";
+import Keyboard from "./components/Keyboard";
 
 function App() {
   const [solution, setSolution] = useState("");
@@ -10,6 +11,11 @@ function App() {
   const [currentGuess, setCurrentGuess] = useState("");
   const [isGameOver, setIsGameOver] = useState(false);
   const [invalidAnimation, setInvalidAnimation] = useState(false);
+  const [keyboardState, setKeyboardState] = useState<LettersState>({
+    correct: [],
+    incorrect: [],
+    almostCorrect: [],
+  });
 
   // setInitial Values
   useEffect(() => {
@@ -54,11 +60,14 @@ function App() {
 
           const path = require(`../../../public/voicelines/${solution}.mp3`);
           const audio = new Audio(path);
+          audio.volume = 0.5;
           audio.play();
         }
         const newGuesses = [...guesses];
         newGuesses[guesses.findIndex((val) => val == null)] = currentGuess;
         setGuesses(newGuesses);
+        const uniqueLetters = handleKeyboardState(newGuesses, solution);
+        setKeyboardState(uniqueLetters);
         setCurrentGuess("");
       }
       if (event.key === "Backspace") {
@@ -84,22 +93,55 @@ function App() {
     setTimeout(() => setInvalidAnimation(false), 500);
   }
   return (
-    <div className="container">
-      <h1>Wordly League of Legends</h1>
-      {guesses.map((guess, i) => {
-        const isCurrentGuess = i === guesses.findIndex((val) => val == null);
-        return (
-          <Line
-            guess={isCurrentGuess ? currentGuess : guess ?? ""}
-            isFinal={!isCurrentGuess && guess !== null}
-            solution={solution}
-            shake={isCurrentGuess ? invalidAnimation : false}
-            key={i}
-          />
-        );
-      })}
+    <div className="app">
+      <div className="container">
+        <h1>Wordle League of Legends</h1>
+        {guesses.map((guess, i) => {
+          const isCurrentGuess = i === guesses.findIndex((val) => val == null);
+          return (
+            <Line
+              guess={isCurrentGuess ? currentGuess : guess ?? ""}
+              isFinal={!isCurrentGuess && guess !== null}
+              shake={isCurrentGuess ? invalidAnimation : false}
+              key={i}
+              keyboardState={keyboardState}
+            />
+          );
+        })}
+      </div>
+      <Keyboard keyboardState={keyboardState} solution={solution} />
     </div>
   );
 }
+export interface LettersState {
+  correct: string[];
+  almostCorrect: string[];
+  incorrect: string[];
+}
 
+const handleKeyboardState = (newGuesses: string[], solution: string) => {
+  const wordList = newGuesses.filter((word) => word !== null);
+  const usedLettersList: string[] = [];
+  const obj: LettersState = {
+    correct: [],
+    almostCorrect: [],
+    incorrect: [],
+  };
+
+  wordList.forEach((word) => {
+    word.split("").forEach((char, index) => {
+      if (char === solution[index]) {
+        obj.correct = [...obj.correct, ...new Set(char)];
+      } else if (solution.includes(char)) {
+        obj.almostCorrect = [...obj.almostCorrect, ...new Set(char)];
+      } else {
+        obj.incorrect = [...obj.incorrect, ...new Set(char)];
+      }
+      usedLettersList.push(char);
+    });
+  });
+
+  //const uniqueLettersUsed = [...new Set(usedLettersList)];
+  return obj;
+};
 export default App;
