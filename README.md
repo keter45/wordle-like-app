@@ -10,7 +10,7 @@ You have 6 chances to guess it corretly
 
 ## To do
 
-- [x] #2795cc996c5ffe494049f2d053a3396f4709cef8
+- [x] Keyboard
 - [ ] better logic to deal with character repetition
 - [ ] share on twitter
 - [ ] one world for day
