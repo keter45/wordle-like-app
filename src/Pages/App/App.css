@@ -46,6 +46,9 @@ body {
   flex-direction: column;
   margin-bottom: 10px;
 }
+.center {
+  margin: 0 auto;
+}
 
 .game-keyboard .row {
   display: flex;

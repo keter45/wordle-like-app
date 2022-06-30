@@ -103,8 +103,8 @@ function App() {
               guess={isCurrentGuess ? currentGuess : guess ?? ""}
               isFinal={!isCurrentGuess && guess !== null}
               shake={isCurrentGuess ? invalidAnimation : false}
+              solution={solution}
               key={i}
-              keyboardState={keyboardState}
             />
           );
         })}
@@ -141,7 +141,6 @@ const handleKeyboardState = (newGuesses: string[], solution: string) => {
     });
   });
 
-  //const uniqueLettersUsed = [...new Set(usedLettersList)];
   return obj;
 };
 export default App;

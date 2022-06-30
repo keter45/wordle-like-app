@@ -1,24 +1,21 @@
 import { FC } from "react";
-import { LettersState } from "../App";
 interface LineProps {
   guess: string;
   isFinal: boolean;
   shake: boolean;
-  keyboardState?: LettersState;
+  solution: string;
 }
-const Line: FC<LineProps> = ({ guess, isFinal, shake, keyboardState }) => {
+const Line: FC<LineProps> = ({ guess, isFinal, shake, solution }) => {
   const tiles = [];
   for (let i = 0; i < 5; i++) {
     const char = guess[i];
     let className = "tile";
 
-    if (isFinal && keyboardState) {
-      if (keyboardState.correct.includes(char)) {
+    if (isFinal) {
+      if (char === solution[i]) {
         className += " correct";
-      } else if (keyboardState.almostCorrect.includes(char)) {
+      } else if (solution.includes(char)) {
         className += " almost-correct";
-      } else if (keyboardState.incorrect.includes(char)) {
-        className += " incorrect";
       }
     }
 

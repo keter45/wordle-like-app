@@ -49,6 +49,7 @@ const Keyboard: FC<KeyboardProps> = ({ keyboardState, solution }) => {
   });
   return (
     <div className="game-keyboard">
+      <small className="center">Use your keyboard or this virtual</small>
       {rows.map((row, i) => (
         <div className="row" key={"row" + i}>
           {row}
