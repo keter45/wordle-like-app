@@ -10,7 +10,7 @@ You have 6 chances to guess it corretly
 
 ## To do
 
-- [x] #1e96e75
+- [x] #2795cc996c5ffe494049f2d053a3396f4709cef8
 - [ ] better logic to deal with character repetition
 - [ ] share on twitter
 - [ ] one world for day
