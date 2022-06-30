@@ -3,13 +3,18 @@ import "./App.css";
 import Line from "./components/Line";
 import confetti from "canvas-confetti";
 import Keyboard from "./components/Keyboard";
+import { TwitterShareButton } from "react-twitter-embed";
+
+interface GameOver {
+  state: "Loose" | "Win" | "";
+}
 
 function App() {
   const [solution, setSolution] = useState("");
   const [avaliableChamps, setAvaliableChamps] = useState<string[]>();
   const [guesses, setGuesses] = useState<string[]>(Array(6).fill(null));
   const [currentGuess, setCurrentGuess] = useState("");
-  const [isGameOver, setIsGameOver] = useState(false);
+  const [isGameOver, setIsGameOver] = useState<GameOver>({ state: "" });
   const [invalidAnimation, setInvalidAnimation] = useState(false);
   const [keyboardState, setKeyboardState] = useState<LettersState>({
     correct: [],
@@ -39,7 +44,7 @@ function App() {
   // handle key event
   useEffect(() => {
     const handleType = (event: KeyboardEvent) => {
-      if (isGameOver) {
+      if (isGameOver.state === "Win") {
         return;
       }
 
@@ -51,7 +56,7 @@ function App() {
         }
         const isCorrect = solution === currentGuess;
         if (isCorrect) {
-          setIsGameOver(isCorrect);
+          setIsGameOver({ state: "Win" });
           confetti({
             particleCount: 100,
             spread: 70,
@@ -63,12 +68,17 @@ function App() {
           audio.volume = 0.5;
           audio.play();
         }
+
         const newGuesses = [...guesses];
         newGuesses[guesses.findIndex((val) => val == null)] = currentGuess;
         setGuesses(newGuesses);
         const uniqueLetters = handleKeyboardState(newGuesses, solution);
         setKeyboardState(uniqueLetters);
         setCurrentGuess("");
+
+        if (guesses.at(-2) !== null) {
+          setIsGameOver({ state: "Loose" });
+        }
       }
       if (event.key === "Backspace") {
         setCurrentGuess(currentGuess.slice(0, -1));
@@ -92,10 +102,24 @@ function App() {
     setInvalidAnimation(true);
     setTimeout(() => setInvalidAnimation(false), 500);
   }
+
   return (
     <div className="app">
       <div className="container">
         <h1>Wordle League of Legends</h1>
+        {isGameOver.state === "Win" && (
+          <TwitterShareButton
+            onLoad={function noRefCheck() {}}
+            options={{
+              buttonHashtag: undefined,
+              screenName: undefined,
+              size: "large",
+              text: `Acertei uhul 😎`,
+              via: "keterpie",
+            }}
+            url="https://wordlelol.vercel.app"
+          />
+        )}
         {guesses.map((guess, i) => {
           const isCurrentGuess = i === guesses.findIndex((val) => val == null);
           return (
@@ -108,6 +132,12 @@ function App() {
             />
           );
         })}
+        {isGameOver.state === "Loose" && (
+          <div>
+            <div>You loose 😢</div>
+            <div>Solution: {solution}</div>
+          </div>
+        )}
       </div>
       <Keyboard keyboardState={keyboardState} solution={solution} />
     </div>
