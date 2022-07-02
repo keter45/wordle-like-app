@@ -6,7 +6,7 @@ import Keyboard from "./components/Keyboard";
 import { TwitterShareButton } from "react-twitter-embed";
 
 interface GameOver {
-  state: "Loose" | "Win" | "";
+  state: "Lose" | "Win" | "";
 }
 
 function App() {
@@ -54,6 +54,7 @@ function App() {
           setAnimation();
           return;
         }
+
         const isCorrect = solution === currentGuess;
         if (isCorrect) {
           setIsGameOver({ state: "Win" });
@@ -77,7 +78,7 @@ function App() {
         setCurrentGuess("");
 
         if (guesses.at(-2) !== null) {
-          setIsGameOver({ state: "Loose" });
+          setIsGameOver({ state: "Lose" });
         }
       }
       if (event.key === "Backspace") {
@@ -132,9 +133,9 @@ function App() {
             />
           );
         })}
-        {isGameOver.state === "Loose" && (
+        {isGameOver.state === "Lose" && (
           <div>
-            <div>You loose 😢</div>
+            <div>You lose 😢</div>
             <div>Solution: {solution}</div>
           </div>
         )}
